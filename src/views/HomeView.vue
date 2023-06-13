@@ -1,18 +1,27 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div id="app">
+    <button @click="someFn">Click me</button>
+    <h2>The Wallet</h2>
+    <strong>{{ wallet?.address }}</strong> by {{ wallet?.privateKey }}
+    <p>{{ wallet?.publicKey }}</p>
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+<script>
+import { mapState } from "vuex";
 
-@Options({
-  components: {
-    HelloWorld,
+export default {
+  name: "App",
+  computed: {
+    ...mapState(["wallet"]),
   },
-})
-export default class HomeView extends Vue {}
+  methods: {
+    someFn() {
+      this.$store.dispatch("createWallet");
+    },
+  },
+  beforeCreate() {
+    // `1` is the ID of the book we want to fetch.
+  },
+};
 </script>
