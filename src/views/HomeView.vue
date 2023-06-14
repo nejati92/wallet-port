@@ -1,4 +1,13 @@
+<script setup>
+import { Authenticator } from "@aws-amplify/ui-vue";
+import "@aws-amplify/ui-vue/styles.css";
+</script>
 <template>
+  <authenticator>
+    <template v-slot="{ signOut }">
+      <button @click="signOut">Sign Out</button>
+    </template>
+  </authenticator>
   <div id="app">
     <button @click="someFn">Click me</button>
     <h2>The Wallet</h2>
@@ -13,11 +22,12 @@ import { mapState } from "vuex";
 export default {
   name: "App",
   computed: {
-    ...mapState(["wallet"]),
+    ...mapState(["wallet", "user"]),
   },
   methods: {
     someFn() {
-      this.$store.dispatch("createWallet");
+      console.log(this.$store.getters.getToken);
+      this.$store.dispatch("createWallet", this.$store.getters.getToken);
     },
   },
   beforeCreate() {
