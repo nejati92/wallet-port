@@ -22,9 +22,15 @@ export const actions = {
         mutation createWallet {
           createWallet {
             address
-            mnemonic
-            privateKey
-            publicKey
+            balance {
+            totalAmount
+            tokens {
+              amount
+              contractAddress
+              isNative
+              name
+            }
+          }
           }
         }
       `,
@@ -38,6 +44,37 @@ export const actions = {
     console.log(response.data.createWallet);
 
     commit("setWallet", response.data.createWallet);
+  },
+  async getWallet({ commit }: any, token: any) {
+    console.log(token);
+    const response: any = await API.graphql(
+      graphqlOperation(
+        `
+        query getWalletDetails {
+          getWalletDetails {
+            address
+            balance {
+            totalAmount
+            tokens {
+              amount
+              contractAddress
+              isNative
+              name
+            }
+          }
+          }
+        }
+      `,
+        undefined,
+        token
+      )
+    );
+
+    // Trigger the `setBook` mutation
+    // which is defined above.
+    console.log(response.data.getWalletDetails);
+
+    commit("setWallet", response.data.getWalletDetails);
   },
 };
 
